@@ -9,10 +9,11 @@ app.use(express.json())
 
 let listaDeCarros = [];
 let idteste = 1
+
 app.post('/carros', (req, res)=> {
     const modelo = req.body.modelo
     const marca = req.body.marca
-    const ano = Number(req.body.ano)
+    const ano = req.body.ano
     const cor =  req.body.cor
     const preco = Number(req.body.preco)
 
@@ -54,5 +55,19 @@ app.post('/carros', (req, res)=> {
     })
     )
 })
+
+app.get('/carros', (req, res) => {
+
+    if(listaDeCarros.length === 0){
+        res.status(404).send('Não existe nenhum carro cadastrado!')
+    }
+
+    const listadoscarros = listaDeCarros.map((carro)=> `ID: ${carro.id} | Modelo: ${carro.modelo} | Marca: ${carro.marca} | Ano: ${carro.ano} | Cor: ${carro.cor} | Preço: ${carro.preco}`)
+
+    res.status(200).send(listadoscarros)
+
+})
+
+
 
 app.listen(3333,()=> console.log('Servidor rodando na porta 3333'))
