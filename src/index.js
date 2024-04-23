@@ -68,6 +68,24 @@ app.get('/carros', (req, res) => {
 
 })
 
+app.get('/carros/:buscarMarca', (req, res) => {
+
+    const buscarMarca = req.body.buscarMarca;
+    
+    if (!buscarMarca) {
+        res.status(400).send("Forneça uma marca válida para filtrar!");
+    }
+    
+    const carroFiltrado = listaDeCarros.filter(carro => carro.marca === buscarMarca);
+
+    // if(!carroFiltrado === buscarMarca){
+    //     res.status(400).send("Marca não encontrada!")
+    // }
+
+    // res.status(200).send(carroFiltrado)
+    res.status(200).send(`ID: ${carroFiltrado.id} | Modelo: ${carroFiltrado.modelo} | Cor: ${carroFiltrado.cor} | Preço: R$${carroFiltrado.preco}`)
+
+})
 
 
 app.listen(3333,()=> console.log('Servidor rodando na porta 3333'))
