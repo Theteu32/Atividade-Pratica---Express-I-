@@ -68,7 +68,7 @@ app.get('/carros', (req, res) => {
 
 })
 
-app.get('/carros/:buscarMarca', (req, res) => {
+app.get('/buscarMarca', (req, res) => {
 
     const buscarMarca = req.body.buscarMarca;
     
@@ -78,13 +78,16 @@ app.get('/carros/:buscarMarca', (req, res) => {
     
     const carroFiltrado = listaDeCarros.filter(carro => carro.marca === buscarMarca);
 
-    // if(!carroFiltrado === buscarMarca){
-    //     res.status(400).send("Marca não encontrada!")
-    // }
+    if(listaDeCarros.length === 0){
+        res.status(404).send('Não existe nenhum carro cadastrado!')
+    }
+    if(carroFiltrado.length === 0){
+        res.status(400).send("Marca não encontrada!")
+    }
 
-    // res.status(200).send(carroFiltrado)
-    res.status(200).send(`ID: ${carroFiltrado.id} | Modelo: ${carroFiltrado.modelo} | Cor: ${carroFiltrado.cor} | Preço: R$${carroFiltrado.preco}`)
+    const listaDaBusca = carroFiltrado.map((carro)=> `ID: ${carro.id} | Modelo: ${carro.modelo} | Cor: ${carro.cor} | Preço: ${carro.preco}`)
 
+    res.status(200).json({success: true, data:listaDaBusca})
 })
 
 
