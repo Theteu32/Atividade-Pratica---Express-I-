@@ -164,20 +164,24 @@ app.post('/login', async (req,res) =>{
 
     if(!nome){
         res.status(400).send(JSON.stringify({Mensagem:'Nome inválido'}))
+        return
     }
 
     if(!email){
         res.status(400).send(JSON.stringify({Mensagem:'Email inválida'}))
+        return
     }
 
     if(!senha){
         res.status(400).send(JSON.stringify({Mensagem:'Senha inválida'}))
+        return
     }
     
     const verificandoEmail = logins.find((olhandoEmail)=> olhandoEmail.email === email)
 
     if(verificandoEmail){
         res.status(400).send(JSON.stringify({Mensagem : "Email já cadastrado, informe outro"}))
+        return
     }
 
     const senhaCript = await bcrypt.hash(senha, 10)
@@ -204,21 +208,25 @@ app.get('/login', async(req,res) =>{
 
     if(!email){
         res.status(400).send(JSON.stringify({Mensagem : "Email inválido"}))
+        return
     }
     if(!senha){
         res.status(400).send(JSON.stringify({Mensagem : "Senha inválida"}))
+        return
     }
 
     const validEmail = logins.find((buscando) => buscando.email === email)
 
-    const validSenha = await bcrypt.compare(senha, validEmail.senha)
-
     if(!validEmail){
         res.status(404).send(JSON.stringify({Mensagem:'Email não cadastrado'}))
+        return
     }
+
+    const validSenha = await bcrypt.compare(senha, validEmail.senha)
 
     if(!validSenha){
         res.status(404).send(JSON.stringify({Mensagem:'Senha incorreta'}))
+        return
     }
 
     res.status(200).send(JSON.stringify({Mensagem:"Login efetuado"}))
