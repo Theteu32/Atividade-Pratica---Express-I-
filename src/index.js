@@ -195,7 +195,6 @@ app.post('/login', async (req,res) =>{
 
     res.status(200).send(JSON.stringify({Mensagem:"Login criado com sucesso"}))
 
-    console.log(logins)
 })
 
 app.get('/login', async(req,res) =>{
